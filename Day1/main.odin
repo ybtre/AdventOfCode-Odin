@@ -3,6 +3,7 @@ package AoC
 import "core:fmt"
 import "core:strings"
 import "core:strconv"
+import "vendor:raylib"
 
 FILENAME :: `input_day1.txt`
 FILE :: string(#load(FILENAME))
@@ -10,7 +11,7 @@ FILE :: string(#load(FILENAME))
 main :: proc() {
     p1_result: int = part1_solution();
     part2_solution();
-
+ 
     fmt.println("highest_calories:", p1_result)
 }
 
@@ -23,6 +24,7 @@ part1_solution :: proc() -> int {
     current_calories: int = 0
     for l in file_lines {
         parsed_int, ok := strconv.parse_int(l)
+        
         if ok {
             current_calories += parsed_int
         } else {
