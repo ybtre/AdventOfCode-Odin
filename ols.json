@@ -2,7 +2,7 @@
     "collections": [
         {
             "name": "core",
-            "path": "C:\\Users\\hristo.vuchev\\Documents\\WorkVerse\\Odin\\core"
+            "path": "C:\\Odin\\core"
         },
         {
             "name": "shared",
@@ -13,5 +13,5 @@
     "enable_semantic_tokens": true,
     "enable_hover": true,
     "enable_snippets": true,
-    "odin_command": "C:\Users\hristo.vuchev\Documents\WorkVerse\Odin"
+    "odin_command": "C:\\Odin"
 }
