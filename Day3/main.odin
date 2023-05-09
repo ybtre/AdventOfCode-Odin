@@ -25,14 +25,36 @@ part1_solution :: proc() -> int
     file_lines := strings.split_lines(FILE)
     defer delete(file_lines)
 
+    duplicate_items : [dynamic]string
+    defer delete(duplicate_items)
+
+    uppercase_lookup : string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
     result : int = 0
     
-    for l in file_lines 
+    for line in file_lines 
     {
-        // println("LINE", l)   
-        // ss := strings.split(l, " ")
+        rucksack := strings.split(line, "")
+        
+        for x in 0..<len(rucksack) / 2 {
+            for y in len(rucksack) / 2..< len(rucksack) {
+                if rucksack[y] == rucksack[x]
+                {
+                    append(&duplicate_items, rucksack[x])
+                    break
+                }
+            }
+        }
+    }
 
-   }
+    // for letter in uppercase_lookup 
+    // {
+    //     println(letter)
+    // }
+
+    for dupe in duplicate_items {
+        println("dupes", dupe)
+    }
 
     return result;
 }
