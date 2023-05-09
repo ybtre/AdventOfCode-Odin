@@ -1,3 +1,3 @@
 default:
-	odin.exe build .
+	odin.exe build . -debug
 	.\Day2.exe
