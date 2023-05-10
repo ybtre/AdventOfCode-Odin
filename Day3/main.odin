@@ -27,8 +27,6 @@ part1_solution :: proc() -> int
     duplicate_items : [dynamic]string
     defer delete(duplicate_items)
 
-    uppercase_lookup : string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
     result : int = 0
     
     for line in file_lines 
@@ -75,72 +73,58 @@ part2_solution :: proc() -> int
     file_lines := strings.split_lines(FILE)
     defer delete(file_lines)
 
-    duplicate_items : [dynamic]string
+    duplicate_items : [dynamic]rune
     defer delete(duplicate_items)
 
-    rucksacks := [3]string
-
-    uppercase_lookup : string = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    rucksacks : [3]string
 
     result : int = 0
 
     for i := 0; i < len(file_lines); i += 3
     {
-        rucksacks[0] = strings.split(file_lines[i], "")
-        rucksacks[1] = strings.split(file_lines[i + 1], "")
-        rucksacks[2] = strings.split(file_lines[i + 2], "")
+        rucksacks[0] = file_lines[i]
+        rucksacks[1] = file_lines[i + 1]
+        rucksacks[2] = file_lines[i + 2]
 
         append(&duplicate_items, part2_dupes(rucksacks))
     }
 
     counter : int = 0
     for item in duplicate_items {
-        for letter in uppercase_lookup
+        if unicode.is_upper(item)
         {
-            counter +=1
-            if u8(letter) == item[0]
-            {
-                result += counter + 26
-                counter = 0
-                break
-            }
-
-            if u8(letter)+32 == item[0]
-            {
-                // println("Letter: ", u8(letter)+32, " Item: ", item[0])
-                result += counter
-                counter = 0
-                break
-            }
-        }
-    }
-    counter : int = 0
-    for item in duplicate_items {
-        if unicode.is_upper(rune(item[0]))
-        {
-            // println("Code: ", item[0], " Letter: ", item, " int: ", int(item[0]), " final: ", int(item[0])-38)
-            result += int(item[0]) - 38
+            // println("Code: ", item, " Letter: ", item, " int: ", int(item), " final: ", int(item)-38)
+            result += int(item) - 38
         }
         else {
-            // println("Code: ", item[0], " Letter: ", item, " int: ", int(item[0]), " final: ", int(item[0])-96)
-            result += int(item[0]) - 96
+            // println("Code: ", item, " Letter: ", item, " int: ", int(item), " final: ", int(item)-96)
+            result += int(item) - 96
         }
     }
     
     return result;
 }
 
-part2_dupes :: proc(rucksack: []string) -> string
+part2_dupes :: proc(rucksacks: [3]string) -> rune
 {    
-    half_len := len(rucksack) / 2
-    for x in 0..<half_len {
-        for y in half_len..< len(rucksack) {
-            if rucksack[y] == rucksack[x]
-            {
-                return rucksack[x]
-            }
-        }
+    dupes : [dynamic]rune
+    dupe : rune
+
+    for x in rucksacks[0]
+    {
+        if strings.contains_rune(rucksacks[1], x)
+        {
+            append(&dupes, x)
+        }    
     }
 
-    return ""
+    for x in dupes 
+    {
+        if strings.contains_rune(rucksacks[2], x)
+        {
+            dupe = x
+        }
+    }    
+    // fmt.println("Dupe: ", dupe)    
+    return dupe
 }
