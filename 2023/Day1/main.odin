@@ -77,6 +77,29 @@ part1_solution :: proc() -> int
     return result
 }
 
+line_contains :: proc(LINE, KEY : string) -> [dynamic]MATCH
+{
+    result := make([dynamic]MATCH)
+
+    if strings.contains(LINE, KEY)
+    {
+        temp := LINE
+        count :=  strings.count(temp, KEY)
+        for i := 0; i < count; i += 1
+        {
+            new_match : MATCH
+            new_match.item = KEY
+            new_match.idx, new_match.width = strings.index_multi(temp, {KEY})
+
+            append(&result, new_match)
+        
+            temp,_ = strings.replace(temp, KEY, " ", 1)
+        }
+    }
+
+    return result
+}
+
 MATCH :: struct {
     item    : string,
     idx     : int,
@@ -97,221 +120,90 @@ part2_solution :: proc() -> int
     //parse and find matches
     for line in file_lines 
     {
-        printf("LINE: %s\n", line) 
+        //printf("LINE: %s\n", line) 
 
-        if strings.contains(line, "one")
-        {
-            //printf("CONTAINS: %s ", "one")
-            //printf(" AT: %i COUNT %i\n", strings.index_multi(line, {"one"}))
+        //find matches
+        append(&matches, ..line_contains(line, "one")[:])
+        append(&matches, ..line_contains(line, "two")[:])
+        append(&matches, ..line_contains(line, "three")[:])
+        append(&matches, ..line_contains(line, "four")[:])
+        append(&matches, ..line_contains(line, "five")[:])
+        append(&matches, ..line_contains(line, "six")[:])
+        append(&matches, ..line_contains(line, "seven")[:])
+        append(&matches, ..line_contains(line, "eight")[:])
+        append(&matches, ..line_contains(line, "nine")[:])
 
-            new_match : MATCH
-            new_match.item = "one"
-            new_match.idx, new_match.width = strings.index_multi(line, {"one"})
-
-            append(&matches, new_match)
-
-            //printf("ITEM: %s, AT %i, COUNT %i\n", new_match.item, new_match.idx, new_match.width)
-        }
-        if strings.contains(line, "two")
-        {
-            new_match : MATCH
-            new_match.item = "two"
-            new_match.idx, new_match.width = strings.index_multi(line, {"two"})
-
-            append(&matches, new_match)
-        }
-        if strings.contains(line, "three")
-        {
-            new_match : MATCH
-            new_match.item = "three"
-            new_match.idx, new_match.width = strings.index_multi(line, {"three"})
-
-            append(&matches, new_match)
-        }
-        if strings.contains(line, "four")
-        {
-            new_match : MATCH
-            new_match.item = "four"
-            new_match.idx, new_match.width = strings.index_multi(line, {"four"})
-
-            append(&matches, new_match)
-        }
-        if strings.contains(line, "five")
-        {
-            new_match : MATCH
-            new_match.item = "five"
-            new_match.idx, new_match.width = strings.index_multi(line, {"five"})
-
-            append(&matches, new_match)
-        }
-        if strings.contains(line, "six")
-        {
-            new_match : MATCH
-            new_match.item = "six"
-            new_match.idx, new_match.width = strings.index_multi(line, {"six"})
-
-            append(&matches, new_match)
-        }
-        if strings.contains(line, "seven")
-        {
-            new_match : MATCH
-            new_match.item = "seven"
-            new_match.idx, new_match.width = strings.index_multi(line, {"seven"})
-
-            append(&matches, new_match)
-        }
-        if strings.contains(line, "eight")
-        {
-            new_match : MATCH
-            new_match.item = "eight"
-            new_match.idx, new_match.width = strings.index_multi(line, {"eight"})
-
-            append(&matches, new_match)
-        }
-        if strings.contains(line, "nine")
-        {
-            new_match : MATCH
-            new_match.item = "nine"
-            new_match.idx, new_match.width = strings.index_multi(line, {"nine"})
-
-            append(&matches, new_match)
-        }
-
-        if strings.contains(line, "1")
-        {
-            new_match : MATCH
-            new_match.item = "1"
-            new_match.idx, new_match.width = strings.index_multi(line, {"1"})
-
-            append(&matches, new_match)
-            //printf("ITEM: %s, AT %i, COUNT %i\n", new_match.item, new_match.idx, new_match.width)
-        }
-        if strings.contains(line, "2")
-        {
-            new_match : MATCH
-            new_match.item = "2"
-            new_match.idx, new_match.width = strings.index_multi(line, {"2"})
-
-            append(&matches, new_match)
-            //printf("ITEM: %s, AT %i, COUNT %i\n", new_match.item, new_match.idx, new_match.width)
-        }
-        if strings.contains(line, "3")
-        {
-            new_match : MATCH
-            new_match.item = "3"
-            new_match.idx, new_match.width = strings.index_multi(line, {"3"})
-
-            append(&matches, new_match)
-            //printf("ITEM: %s, AT %i, COUNT %i\n", new_match.item, new_match.idx, new_match.width)
-        }
-        if strings.contains(line, "4")
-        {
-            new_match : MATCH
-            new_match.item = "4"
-            new_match.idx, new_match.width = strings.index_multi(line, {"4"})
-
-            append(&matches, new_match)
-            //printf("ITEM: %s, AT %i, COUNT %i\n", new_match.item, new_match.idx, new_match.width)
-        }
-        if strings.contains(line, "5")
-        {
-            new_match : MATCH
-            new_match.item = "5"
-            new_match.idx, new_match.width = strings.index_multi(line, {"5"})
-
-            append(&matches, new_match)
-            //printf("ITEM: %s, AT %i, COUNT %i\n", new_match.item, new_match.idx, new_match.width)
-        }
-        if strings.contains(line, "6")
-        {
-            new_match : MATCH
-            new_match.item = "6"
-            new_match.idx, new_match.width = strings.index_multi(line, {"6"})
-
-            append(&matches, new_match)
-            //printf("ITEM: %s, AT %i, COUNT %i\n", new_match.item, new_match.idx, new_match.width)
-        }
-        if strings.contains(line, "7")
-        {
-            new_match : MATCH
-            new_match.item = "7"
-            new_match.idx, new_match.width = strings.index_multi(line, {"7"})
-
-            append(&matches, new_match)
-            //printf("ITEM: %s, AT %i, COUNT %i\n", new_match.item, new_match.idx, new_match.width)
-        }
-        if strings.contains(line, "8")
-        {
-            new_match : MATCH
-            new_match.item = "8"
-            new_match.idx, new_match.width = strings.index_multi(line, {"8"})
-
-            append(&matches, new_match)
-            //printf("ITEM: %s, AT %i, COUNT %i\n", new_match.item, new_match.idx, new_match.width)
-        }
-        if strings.contains(line, "9")
-        {
-            new_match : MATCH
-            new_match.item = "9"
-            new_match.idx, new_match.width = strings.index_multi(line, {"9"})
-
-            append(&matches, new_match)
-            //printf("ITEM: %s, AT %i, COUNT %i\n", new_match.item, new_match.idx, new_match.width)
-        }
-
+        append(&matches, ..line_contains(line, "1")[:])
+        append(&matches, ..line_contains(line, "2")[:])
+        append(&matches, ..line_contains(line, "3")[:])
+        append(&matches, ..line_contains(line, "4")[:])
+        append(&matches, ..line_contains(line, "5")[:])
+        append(&matches, ..line_contains(line, "6")[:])
+        append(&matches, ..line_contains(line, "7")[:])
+        append(&matches, ..line_contains(line, "8")[:])
+        append(&matches, ..line_contains(line, "9")[:])
 
         //sort found matches
         slice.sort_by(matches[:], proc(i, j:MATCH) -> bool { return i.idx < j.idx })
 
-        //convert strings into ints
+        //convert words into digits
         for i := 0; i < len(matches); i += 1
         {
             if matches[i].item == "one"
             {
                 matches[i].item = "1"
+                matches[i].width = 1
             }
             if matches[i].item == "two"
             {
                 matches[i].item = "2"
+                matches[i].width = 1
             }
             if matches[i].item == "three"
             {
                 matches[i].item = "3"
+                matches[i].width = 1
             }
             if matches[i].item == "four"
             {
                 matches[i].item = "4"
+                matches[i].width = 1
             }
             if matches[i].item == "five"
             {
                 matches[i].item = "5"
+                matches[i].width = 1
             }
             if matches[i].item == "six"
             {
                 matches[i].item = "6"
+                matches[i].width = 1
             }
             if matches[i].item == "seven"
             {
                 matches[i].item = "7"
+                matches[i].width = 1
             }
             if matches[i].item == "eight"
             {
                 matches[i].item = "8"
+                matches[i].width = 1
             }
             if matches[i].item == "nine"
             {
                 matches[i].item = "9"
+                matches[i].width = 1
             }
         }
 
         //calculate result
         concat := strings.concatenate({matches[0].item, matches[len(matches)-1].item})
-        printf("CONCAT: %s\n", concat)
+        //printf("CONCAT: %s\n", concat)
 
         //calculate result
         result += strconv.atoi(concat)
 
-        // reset for next loop
+        // reset for next line
         remove_range(&matches, 0, len(matches))
     }
 

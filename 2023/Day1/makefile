@@ -1,3 +1,2 @@
 default:
-	odin.exe build . -show-timings -out:output.exe -debug -vet-style -subsystem:console
-	.\output.exe
+	odin.exe run . -show-timings -out:output.exe -debug -vet-style -subsystem:console
