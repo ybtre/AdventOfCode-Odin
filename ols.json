@@ -2,16 +2,18 @@
     "collections": [
         {
             "name": "core",
-            "path": "C:\\Odin\\core"
+            "path": "C:\\HOME_hv\\Odin\\core"
         },
         {
             "name": "shared",
-            "path": "C:\\Users\\hristo.vuchev\\Documents\\WorkVerse\\Odin-Projects\\AoC-Odin\\Day1"
+            "path": "C:\\Users\\hristo.vuchev\\Documents\\WorkVerse\\Handmade\\Odin\\AdventOfCode-Odin"
         }
     ],
-    "enable_document_symbols": true,
-    "enable_semantic_tokens": true,
     "enable_hover": true,
     "enable_snippets": true,
-    "odin_command": "C:\\Odin"
+    "enable_semantic_tokens": true,
+    "enable_document_symbols": true,
+    "enable_fake_methods": false,
+    "enable_inlay_hints": true,
+    "verbose": true,
 }
