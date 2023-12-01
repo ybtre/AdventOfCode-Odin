@@ -7,6 +7,7 @@ import "core:slice"
 import "core:mem"
 import "core:unicode"
 import "core:unicode/utf8"
+import "core:time"
 
 FILENAME :: `input.txt`
 //FILENAME :: `demo1.txt`
@@ -15,11 +16,24 @@ FILE :: string(#load(FILENAME))
 
 main :: proc() 
 {
-    p1_result: int = part1_solution()
-    p2_result: int = part2_solution()
+    arena_backing := make([]u8, 16 * mem.Megabyte)
+    solution_arena: mem.Arena
+    mem.arena_init(&solution_arena, arena_backing)
 
-    fmt.println("Part 1 Result: ", p1_result)
-    fmt.println("Part 2 Result: ", p2_result)
+    alloc := mem.arena_allocator(&solution_arena)
+    context.allocator = alloc
+
+    fmt.println("---------------------------------------------------------------------")
+    part1_start := time.now()
+        p1_result: int = part1_solution()
+    part1_end := time.now()
+    fmt.println("PART 1:", p1_result, "Time:", time.diff(part1_start, part1_end), "Memory Used:", solution_arena.peak_used)
+
+    part2_start := time.now()
+        p2_result: int = part2_solution()
+    part2_end := time.now()
+    fmt.println("PART 2:", p2_result, "Time:", time.diff(part2_start, part2_end), "Memory Used:", solution_arena.peak_used)
+    fmt.println("---------------------------------------------------------------------\n")
 }
 
 part1_solution :: proc() -> int 
@@ -80,7 +94,7 @@ part1_solution :: proc() -> int
 line_contains :: proc(LINE, KEY : string) -> [dynamic]MATCH
 {
     result := make([dynamic]MATCH)
-
+        
     if strings.contains(LINE, KEY)
     {
         temp := strings.clone(LINE)
@@ -92,7 +106,7 @@ line_contains :: proc(LINE, KEY : string) -> [dynamic]MATCH
             new_match.idx, new_match.width = strings.index_multi(temp, {KEY})
 
             append(&result, new_match)
-
+            
             temp,_ = strings.replace(temp, KEY, strings.repeat(" ", len(KEY)), 1)
         }
     }
@@ -123,7 +137,7 @@ part2_solution :: proc() -> int
         //printf("LINE: %s\n", line) 
 
         //find matches
-        append(&matches, ..line_contains(line, "one")[:])
+                append(&matches, ..line_contains(line, "one")[:])
         append(&matches, ..line_contains(line, "two")[:])
         append(&matches, ..line_contains(line, "three")[:])
         append(&matches, ..line_contains(line, "four")[:])
@@ -142,7 +156,7 @@ part2_solution :: proc() -> int
         append(&matches, ..line_contains(line, "7")[:])
         append(&matches, ..line_contains(line, "8")[:])
         append(&matches, ..line_contains(line, "9")[:])
-
+        
         //sort found matches
         slice.sort_by(matches[:], proc(i, j:MATCH) -> bool { return i.idx < j.idx })
 
