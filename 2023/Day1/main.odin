@@ -92,31 +92,8 @@ line_contains :: proc(LINE, KEY : string) -> [dynamic]MATCH
             new_match.idx, new_match.width = strings.index_multi(temp, {KEY})
 
             append(&result, new_match)
-            
-            if new_match.width == 1
-            {
-                temp,_ = strings.replace(temp, KEY, " ", 1)
-            }
-            if new_match.width == 2
-            {
-                temp,_ = strings.replace(temp, KEY, "  ", 1)
-            }
-            if new_match.width == 3
-            {
-                temp,_ = strings.replace(temp, KEY, "   ", 1)
-            }
-            if new_match.width == 4
-            {
-                temp,_ = strings.replace(temp, KEY, "    ", 1)
-            }
-            if new_match.width == 5
-            {
-                temp,_ = strings.replace(temp, KEY, "     ", 1)
-            }
-            if new_match.width == 6
-            {
-                temp,_ = strings.replace(temp, KEY, "      ", 1)
-            }
+
+            temp,_ = strings.replace(temp, KEY, strings.repeat(" ", len(KEY)), 1)
         }
     }
 
