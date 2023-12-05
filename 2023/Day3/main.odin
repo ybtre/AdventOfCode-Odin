@@ -53,9 +53,17 @@ part1_solution :: proc() -> int
     result : int
 
     for line in file_lines {
+        println(line)
 
+        for c in line {
+            if unicode.is_digit(c)
+            {
+                println(c)
+            }
+        }
     }
 
+    result = 0
     return result
 }
 
