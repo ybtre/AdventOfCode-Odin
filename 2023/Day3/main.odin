@@ -383,7 +383,6 @@ part1_solution :: proc() -> int
 
     for g in gears
     {
-        //println(g.val)
         result += g.val
     }
     return result
@@ -400,11 +399,246 @@ part2_solution :: proc() -> int
 
     result : int
 
-    /*
-    for line in file_lines {
+    symbols := make([dynamic]SYMBOL)
+    numbers := make([dynamic]DIGIT)
 
+    idx := 0
+    idy := 0
+    temp_d : string
+    file_height := 0
+    for line := 0; line < len(file_lines); line += 1 
+    {
+        file_height += 1
+        using unicode
+
+        idx = 0
+
+        for r := 0; r < len(file_lines[line]); r += 1 {
+            c := file_lines[line][r]
+            if c == STAR
+            {
+                append(&symbols, SYMBOL{ STAR, idx, idy })
+            }
+
+            if is_digit(rune(c))
+            {
+                r := utf8.runes_to_string({rune(c)})
+                temp_d = concatenate({temp_d, r})
+            }
+            else
+            {
+                if atoi(temp_d) != 0
+                {
+                    n := DIGIT{ atoi(temp_d), idx - len(temp_d), idy, len(temp_d) }
+                    append(&numbers, n)
+                    temp_d = {}
+                }
+            }
+
+            if idx == len(file_lines[line])-1
+            {
+                if atoi(temp_d) != 0
+                {
+                    n := DIGIT{ atoi(temp_d), idx - len(temp_d) + 1, idy, len(temp_d) }
+                    append(&numbers, n)
+                    temp_d = {}
+                }
+            }
+
+            idx += 1
+        }
+        idy += 1
     }
-    */
+
+
+    temp_gears := make([dynamic]DIGIT)
+
+    for s in symbols
+    {
+        using unicode 
+        
+        count := 0
+        if s.idy - 1 != -1
+        {
+            above_line := file_lines[s.idy - 1]
+            if s.idx - 1 != -1
+            {
+                top_left := utf8.runes_to_string({ rune(above_line[s.idx - 1]) })
+                if is_digit(rune(top_left[0]))
+                {
+                    for n in numbers
+                    {
+                        if n.idy == s.idy - 1
+                        {
+                            if n.idx + n.width - 1 == s.idx - 1
+                            {
+                                count += 1
+                                append(&temp_gears, n)
+                            }
+                        }
+                    }
+                }
+            }
+            top := utf8.runes_to_string({ rune(above_line[s.idx]) })
+            if is_digit(rune(top[0]))
+            {
+                for n in numbers
+                {
+                    if n.idy == s.idy - 1
+                    {
+                        if n.idx == s.idx
+                        {
+                            count += 1
+                            append(&temp_gears, n)
+                        }
+                        else if n.idx + n.width - 1 == s.idx
+                        {
+                            count += 1
+                            append(&temp_gears, n)
+                        }
+                        else if n.idx + 1 == s.idx
+                        {
+                            count += 1
+                            append(&temp_gears, n)
+                        }
+                    }
+                }
+            }
+            if s.idx + 1 <= len(above_line)
+            {
+                top_right := utf8.runes_to_string({ rune(above_line[s.idx+1]) })
+                if is_digit(rune(top_right[0]))
+                {
+                    for n in numbers
+                    {
+                        if n.idy == s.idy - 1
+                        {
+                            if n.idx == s.idx +1
+                            {
+                                count += 1
+                                append(&temp_gears, n)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        same_line := file_lines[s.idy]
+        if s.idx - 1 != -1
+        {
+            left := utf8.runes_to_string({ rune(same_line[s.idx - 1]) })
+            if is_digit(rune(left[0]))
+            {
+                for n in numbers
+                {
+                    if n.idy == s.idy
+                    {
+                        if n.idx + n.width - 1 == s.idx - 1
+                        {
+                            count += 1
+                            append(&temp_gears, n)
+                        }
+                    }
+                }
+            }
+        }
+        if s.idx + 1 <= len(same_line)
+        {
+            right := utf8.runes_to_string({ rune(same_line[s.idx + 1]) })
+            if is_digit(rune(right[0]))
+            {
+                for n in numbers
+                {
+                    if n.idy == s.idy
+                    {
+                        if n.idx == s.idx +1
+                        {
+                            count += 1
+                            append(&temp_gears, n)
+                        }
+                    }
+                }
+            }
+        }
+
+        if s.idy + 1 < file_height 
+        {
+            below_line := file_lines[s.idy + 1]
+            if s.idx -1 != -1
+            {
+                bot_left := utf8.runes_to_string({ rune(below_line[s.idx - 1]) })
+                if is_digit(rune(bot_left[0]))
+                {
+                    for n in numbers
+                    {
+                        if n.idy == s.idy + 1
+                        {
+                            if n.idx + n.width - 1 == s.idx - 1
+                            {
+                                count += 1
+                                append(&temp_gears, n)
+                            }
+                        }
+                    }
+                }
+            }
+            bot := utf8.runes_to_string({ rune(below_line[s.idx]) })
+            if is_digit(rune(bot[0]))
+            {
+                for n in numbers
+                {
+                    if n.idy == s.idy + 1
+                    {
+                        if n.idx == s.idx
+                        {
+                            count += 1
+                            append(&temp_gears, n)
+                        }
+                        else if n.idx + n.width - 1 == s.idx
+                        {
+                            count += 1
+                            append(&temp_gears, n)
+                        }
+                        else if n.idx + 1 == s.idx
+                        {
+                            count += 1
+                            append(&temp_gears, n)
+                        }
+                    }
+                }
+            }
+            if s.idx + 1 <= len(below_line)
+            {
+                bot_right := utf8.runes_to_string({ rune(below_line[s.idx + 1]) })
+                if is_digit(rune(bot_right[0]))
+                {
+                    for n in numbers
+                    {
+                        if n.idy == s.idy + 1
+                        {
+                            if n.idx == s.idx +1
+                            {
+                                count += 1
+                                append(&temp_gears, n)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if count == 2
+        {
+            g1 := temp_gears[0]
+            g2 := temp_gears[1]
+            
+            multi := g1.val * g2.val
+            result += multi
+        }
+
+        clear(&temp_gears)
+    }
 
     return result
 }
