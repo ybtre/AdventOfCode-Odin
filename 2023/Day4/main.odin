@@ -12,7 +12,7 @@ import "core:time"
 INPUT :: `input.txt`
 DEMO1 :: `demo1.txt`
 DEMO2 :: `demo2.txt`
-FILE :: string(#load(DEMO2))
+FILE :: string(#load(INPUT))
 
 main :: proc() 
 {
@@ -162,61 +162,34 @@ part2_solution :: proc() -> int
     defer delete(file_lines)
 
     result : int
-    sum : int
 
-    copy_ids := make([dynamic]int)
-    dupes := make(map[int]int)
+    match_idx := 0
+    cards := make([dynamic]int)
+    resize_dynamic_array(&cards, strings.count(FILE, "\n") + 1)
 
-    for i := 0; i < len(scratch_cards); i += 1
+    for card_idx := 0; card_idx < len(file_lines); card_idx += 1
     {
-        s := scratch_cards[i]
-    }
+        // get points for current card
+        matches := scratch_cards[match_idx].points
 
-    for i := 0; i < len(scratch_cards); i += 1
-    {
-        for j := i; j < len(scratch_cards); j += 1
+        // add a copy of the current card (original)
+        cards[card_idx] += 1
+
+        //count copies of cards
+        for j in card_idx + 1 ..< card_idx + 1 + matches
         {
-            s := scratch_cards[j]
+            cards[j] += cards[card_idx]
+        }
 
-            for k := j; k <= s.points; k += 1
-            {
-                dupes[s.card_id + k] += 1
-                append(&copy_ids, s.card_id + k)
-            }
-        }
+        match_idx += 1
     }
-    /*
-    for s in scratch_cards
-    {
-        //m[s.card_id] = s.points
-        //println(s)
-        for i := 0; i <= s.points; i+=1
-        {
-            //println("DUPES:", s.card_id + i)
-            dupes[s.card_id + i] += 1
-            append(&copy_ids, s.card_id + i)
-        }
-    }
-    //println("DUPES:", dupes)
-    
-    for j := 1; j < len(scratch_cards); j+=1
-    {
-        s := scratch_cards[j]
 
-        //m[s.card_id] = s.points
-        println("CUR:",s.card_id)
-        for i := 1; i <= s.points; i+=1
-        {
-            println("NEXT:", s.card_id+i)
-            //println("DUPES:", s.card_id + i)
-            dupes[s.card_id + i] += 1
-            append(&copy_ids, s.card_id + i)
-        }
+    //println(cards)
+
+    for c in cards
+    {
+        result += c
     }
-    */
-    println("DUPES:", dupes)
-    println("COPY IDS:", copy_ids)
-    
 
     return result
 }
