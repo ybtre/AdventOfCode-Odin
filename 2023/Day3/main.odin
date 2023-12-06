@@ -3,7 +3,6 @@ package day3
 import "core:fmt"
 import "core:strings"
 import "core:strconv"
-import "core:slice"
 import "core:mem"
 import "core:unicode"
 import "core:unicode/utf8"
@@ -149,7 +148,21 @@ part1_solution :: proc() -> int
             {
                 if atoi(temp_d) != 0
                 {
-                    append(&numbers, DIGIT{ atoi(temp_d), idx - len(temp_d), idy, len(temp_d) })
+                    //println(temp_d)
+                    n := DIGIT{ atoi(temp_d), idx - len(temp_d), idy, len(temp_d) }
+                    //println(n)
+                    append(&numbers, n)
+                    temp_d = {}
+                }
+            }
+
+            if idx == len(file_lines[line])-1
+            {
+                if atoi(temp_d) != 0
+                {
+                    //println(temp_d)
+                    n := DIGIT{ atoi(temp_d), idx - len(temp_d) + 1, idy, len(temp_d) }
+                    append(&numbers, n)
                     temp_d = {}
                 }
             }
@@ -176,7 +189,7 @@ part1_solution :: proc() -> int
     }
 
     //println("GEARs ===============")
-    part_numbers := make([dynamic]int)
+    gears := make([dynamic]DIGIT)
     for s in symbols
     {
         using unicode 
@@ -199,7 +212,7 @@ part1_solution :: proc() -> int
                             if n.idx + n.width - 1 == s.idx - 1
                             {
                                 //println("TL",n)
-                                append(&part_numbers, n.val)
+                                append(&gears, n)
                             }
                         }
                     }
@@ -215,16 +228,16 @@ part1_solution :: proc() -> int
                         if n.idx == s.idx
                         {
                             //println("T",n)
-                            append(&part_numbers, n.val)
+                            append(&gears, n)
                         }
                         else if n.idx + n.width - 1 == s.idx
                         {
                             //println("T",n)
-                            append(&part_numbers, n.val)
+                            append(&gears, n)
                         }
                         else if n.idx + 1 == s.idx
                         {
-                            append(&part_numbers, n.val)
+                            append(&gears, n)
                         }
                     }
                 }
@@ -239,10 +252,11 @@ part1_solution :: proc() -> int
                         if n.idy == s.idy - 1
                         {
                             //println(n.idx, s.idx+1)
+                            //println(n)
                             if n.idx == s.idx +1
                             {
                                 //println("TR",n)
-                                append(&part_numbers, n.val)
+                                append(&gears, n)
                             }
                         }
                     }
@@ -266,7 +280,7 @@ part1_solution :: proc() -> int
                         if n.idx + n.width - 1 == s.idx - 1
                         {
                             //println("L",n)
-                            append(&part_numbers, n.val)
+                            append(&gears, n)
                         }
                     }
                 }
@@ -285,7 +299,7 @@ part1_solution :: proc() -> int
                         if n.idx == s.idx +1
                         {
                             //println("R",n)
-                            append(&part_numbers, n.val)
+                            append(&gears, n)
                         }
                     }
                 }
@@ -313,7 +327,7 @@ part1_solution :: proc() -> int
                             if n.idx + n.width - 1 == s.idx - 1
                             {
                                 //println("BL",n)
-                                append(&part_numbers, n.val)
+                                append(&gears, n)
                             }
                         }
                     }
@@ -330,16 +344,16 @@ part1_solution :: proc() -> int
                         if n.idx == s.idx
                         {
                             //println("B",n)
-                            append(&part_numbers, n.val)
+                            append(&gears, n)
                         }
                         else if n.idx + n.width - 1 == s.idx
                         {
                             //println("B",n)
-                            append(&part_numbers, n.val)
+                            append(&gears, n)
                         }
                         else if n.idx + 1 == s.idx
                         {
-                            append(&part_numbers, n.val)
+                            append(&gears, n)
                         }
                     }
                 }
@@ -354,10 +368,11 @@ part1_solution :: proc() -> int
                         if n.idy == s.idy + 1
                         {
                             //println(n.idx, s.idx+1)
+                            //println(n)
                             if n.idx == s.idx +1
                             {
                                 //println("BR",n)
-                                append(&part_numbers, n.val)
+                                append(&gears, n)
                             }
                         }
                     }
@@ -366,12 +381,11 @@ part1_solution :: proc() -> int
         }
     }
 
-    for p in part_numbers 
+    for g in gears
     {
-        println("GEAR:", p)
-        result += p
+        //println(g.val)
+        result += g.val
     }
-
     return result
 }
 
@@ -386,9 +400,11 @@ part2_solution :: proc() -> int
 
     result : int
 
+    /*
     for line in file_lines {
 
     }
+    */
 
     return result
 }

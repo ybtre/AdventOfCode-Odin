@@ -94,6 +94,7 @@ part1_solution :: proc() -> int
 line_contains :: proc(LINE, KEY : string) -> [dynamic]MATCH
 {
     result := make([dynamic]MATCH)
+    x :: 0
         
     if strings.contains(LINE, KEY)
     {
@@ -137,7 +138,7 @@ part2_solution :: proc() -> int
         //printf("LINE: %s\n", line) 
 
         //find matches
-                append(&matches, ..line_contains(line, "one")[:])
+        append(&matches, ..line_contains(line, "one"))
         append(&matches, ..line_contains(line, "two")[:])
         append(&matches, ..line_contains(line, "three")[:])
         append(&matches, ..line_contains(line, "four")[:])
