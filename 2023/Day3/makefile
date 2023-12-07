@@ -1,2 +1,2 @@
 default:
-	odin.exe run . -show-timings -out:output.exe -debug -vet 
+	odin.exe run . -show-timings -out:output.exe -debug 
