@@ -1,2 +1,2 @@
 default:
-	odin.exe run . -show-timings -out:output.exe -debug -o:speed
+	odin.exe run . -show-timings -out:output.exe -debug -o:speed -subsystem:console
