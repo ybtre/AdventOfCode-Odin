@@ -18,7 +18,7 @@ main :: proc()
 {
     using fmt
 
-    arena_backing := make([]u8, 16 * mem.Megabyte)
+    arena_backing := make([]u8, 64 * mem.Megabyte)
     solution_arena: mem.Arena
     mem.arena_init(&solution_arena, arena_backing)
 
@@ -244,7 +244,7 @@ full_house :: proc(HAND : string) -> bool
                     {
                         if (HAND[o] == HAND[p]) && HAND[o] != 'J'
                         {
-                            println(rune(HAND[o]), rune(HAND[p]))
+                            //println(rune(HAND[o]), rune(HAND[p]))
                             return true
                         }
                     }
@@ -621,7 +621,7 @@ part1_solution :: proc() -> int
 
     for h in hands 
     {
-        println(h.hand, h.type)
+        //println(h.hand, h.type)
 
         result += h.bid * h.rank
     }
@@ -675,8 +675,8 @@ part2_solution :: proc() -> int
             {
                 if A.hand[i] != B.hand[i]
                 {
-                    println(rune(A.hand[i]), rune(B.hand[i]))
-                    println(pwr[rune(A.hand[i])], pwr[rune(B.hand[i])])
+                    //println(rune(A.hand[i]), rune(B.hand[i]))
+                    //println(pwr[rune(A.hand[i])], pwr[rune(B.hand[i])])
                     return pwr[rune(A.hand[i])] < pwr[rune(B.hand[i])]
                 }
             }
