@@ -44,10 +44,20 @@ part1_solution :: proc() -> int
 
     result := 0
 
-    
+    left := make([dynamic]int)
+    right := make([dynamic]int)
+
     for line in file_lines
     {
         printf("LINE: %s\n", line)
+        
+        append(^left, split(line, "   ")[0])
+        append(^right, split(line, "   ")[1])
+    }
+
+    for n in left
+    {
+        printf("LEFT: %i\n", n)
     }
 
     return result
