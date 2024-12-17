@@ -8,9 +8,11 @@ import "core:mem"
 import "core:unicode"
 import "core:unicode/utf8"
 import "core:time"
+import "core:sort"
+import "core:math"
 
-//FILENAME :: `input.txt`
-FILENAME :: `demo1.txt`
+FILENAME :: `input.txt`
+// FILENAME :: `demo1.txt`
 //FILENAME :: `demo2.txt`
 FILE :: string(#load(FILENAME))
 
@@ -27,12 +29,12 @@ main :: proc()
     part1_start := time.now()
         p1_result: int = part1_solution()
     part1_end := time.now()
-    fmt.println("PART 1:", p1_result, "Time:", time.diff(part1_start, part1_end), "Memory Used:", solution_arena.peak_used)
+    fmt.println("PART 1:", p1_result, " -- Time:", time.diff(part1_start, part1_end), " -- Memory Used:", solution_arena.peak_used)
 
     part2_start := time.now()
         p2_result: int = part2_solution()
     part2_end := time.now()
-    fmt.println("PART 2:", p2_result, "Time:", time.diff(part2_start, part2_end), "Memory Used:", solution_arena.peak_used)
+    fmt.println("PART 2:", p2_result, " -- Time:", time.diff(part2_start, part2_end), " -- Memory Used:", solution_arena.peak_used)
     fmt.println("---------------------------------------------------------------------\n")
 }
 
@@ -49,15 +51,24 @@ part1_solution :: proc() -> int
 
     for line in file_lines
     {
-        printf("LINE: %s\n", line)
+        // printf("LINE: %s\n", line)
         
-        append(^left, split(line, "   ")[0])
-        append(^right, split(line, "   ")[1])
+        n, ok := strconv.parse_int(strings.split(line, "   ")[0])
+        append(&left, n)
+
+        n, ok = strconv.parse_int(strings.split(line, "   ")[1])
+        append(&right, n)
     }
 
-    for n in left
+    sort.quick_sort(left[:])
+    sort.quick_sort(right[:])
+
+    for i :int = 0; i < len(left); i+=1
     {
-        printf("LEFT: %i\n", n)
+        a := left[i]
+        b := right[i]
+
+        result += math.abs(a - b)
     }
 
     return result
@@ -66,5 +77,47 @@ part1_solution :: proc() -> int
 
 part2_solution :: proc() -> int
 {
-  return 0
+    using fmt
+    file_lines := strings.split_lines(FILE)
+    defer delete(file_lines)
+
+    result := 0
+
+    left := make([dynamic]int)
+    right := make([dynamic]int)
+
+    for line in file_lines
+    {
+        // printf("LINE: %s\n", line)
+        
+        n, ok := strconv.parse_int(strings.split(line, "   ")[0])
+        append(&left, n)
+
+        n, ok = strconv.parse_int(strings.split(line, "   ")[1])
+        append(&right, n)
+    }
+
+
+    sort.quick_sort(left[:])
+    sort.quick_sort(right[:])
+
+    for i:int=0; i < len(left); i+=1
+    {
+        a := left[i]
+        matches : int
+
+        for j:=0; j <len(right); j+=1
+        {
+            b := right[j]
+
+            if a == b
+            {
+                matches+=1
+            }
+        }
+
+        result += a * matches
+    }
+
+    return result
 }
