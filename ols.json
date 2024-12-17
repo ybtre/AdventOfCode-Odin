@@ -2,11 +2,11 @@
     "collections": [
         {
             "name": "core",
-            "path": "C:\\HOME_hv\\Odin\\core"
+            "path": "C:\\Odin\\core"
         },
         {
             "name": "shared",
-            "path": "C:\\Users\\hristo.vuchev\\Documents\\WorkVerse\\Handmade\\Odin\\AdventOfCode-Odin"
+            "path": "C:\\Users\\hristo.vuchev\\Documents\\fromD\\Handmade\\AdventOfCode-Odin"
         }
     ],
     "enable_hover": true,
@@ -15,5 +15,5 @@
     "enable_document_symbols": true,
     "enable_fake_methods": false,
     "enable_inlay_hints": true,
-    "verbose": true,
+    "verbose": true
 }
