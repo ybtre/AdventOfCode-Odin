@@ -11,8 +11,8 @@ import "core:time"
 import "core:sort"
 import "core:math"
 
-FILENAME :: `input.txt`
-// FILENAME :: `demo1.txt`
+// FILENAME :: `input.txt`
+FILENAME :: `demo1.txt`
 //FILENAME :: `demo2.txt`
 FILE :: string(#load(FILENAME))
 
@@ -46,29 +46,24 @@ part1_solution :: proc() -> int
 
     result := 0
 
-    left := make([dynamic]int)
-    right := make([dynamic]int)
+    row := make([dynamic]string)
+    row_map : map[int]string
 
+    row_id : int
     for line in file_lines
     {
-        // printf("LINE: %s\n", line)
-        
-        n, ok := strconv.parse_int(strings.split(line, "   ")[0])
-        append(&left, n)
+        printf("LINE: %s\n", line)
+       
+        row_map[row_id] = line
+        row_id += 1
 
-        n, ok = strconv.parse_int(strings.split(line, "   ")[1])
-        append(&right, n)
+        n := strings.split(line, " ")
+        append_elems(&row, ..n)
     }
 
-    sort.quick_sort(left[:])
-    sort.quick_sort(right[:])
-
-    for i :int = 0; i < len(left); i+=1
+    for key, value in row_map
     {
-        a := left[i]
-        b := right[i]
-
-        result += math.abs(a - b)
+        fmt.println("KEY: ", key, " VALUE: ", value)
     }
 
     return result
@@ -77,47 +72,7 @@ part1_solution :: proc() -> int
 
 part2_solution :: proc() -> int
 {
-    using fmt
-    file_lines := strings.split_lines(FILE)
-    defer delete(file_lines)
-
     result := 0
-
-    left := make([dynamic]int)
-    right := make([dynamic]int)
-
-    for line in file_lines
-    {
-        // printf("LINE: %s\n", line)
-        
-        n, ok := strconv.parse_int(strings.split(line, "   ")[0])
-        append(&left, n)
-
-        n, ok = strconv.parse_int(strings.split(line, "   ")[1])
-        append(&right, n)
-    }
-
-
-    sort.quick_sort(left[:])
-    sort.quick_sort(right[:])
-
-    for i:int=0; i < len(left); i+=1
-    {
-        a := left[i]
-        matches : int
-
-        for j:=0; j <len(right); j+=1
-        {
-            b := right[j]
-
-            if a == b
-            {
-                matches+=1
-            }
-        }
-
-        result += a * matches
-    }
 
     return result
 }
