@@ -16,50 +16,72 @@ FILENAME :: `input.txt`
 //FILENAME :: `demo2.txt`
 FILE :: string(#load(FILENAME))
 
-main :: proc() {
-  arena_backing := make([]u8, 16 * mem.Megabyte)
-  solution_arena: mem.Arena
-  mem.arena_init(&solution_arena, arena_backing)
+arena_input_backing: [16 * mem.Megabyte]u8
+arena_p1_backing:    [4 * mem.Megabyte]u8
+arena_p2_backing:    [4 * mem.Megabyte]u8
 
-  alloc := mem.arena_allocator(&solution_arena)
-  context.allocator = alloc
+main :: proc() 
+{
+  using fmt
 
-  fmt.println(
+  input_arena: mem.Arena
+  mem.arena_init(&input_arena, arena_input_backing[:])
+
+  p1_arena: mem.Arena
+  mem.arena_init(&p1_arena, arena_p1_backing[:])
+
+  p2_arena: mem.Arena
+  mem.arena_init(&p2_arena, arena_p2_backing[:])  
+
+  println(
     "---------------------------------------------------------------------",
   )
-  part1_start := time.now()
-  p1_result: int = part1_solution()
-  part1_end := time.now()
-  fmt.println(
+
+  context.allocator = mem.arena_allocator(&input_arena)
+  file_lines := strings.split_lines(FILE)
+  defer delete(file_lines)
+
+  // --- PART 1 ---
+  context.allocator = mem.arena_allocator(&p1_arena)
+
+  part1_start : = time.now()
+  p1_result   : = part1_solution(file_lines)
+  part1_end   : = time.now()
+  println(
     "PART 1:",
     p1_result,
     " -- Time:",
     time.diff(part1_start, part1_end),
     " -- Memory Used:",
-    solution_arena.peak_used,
+    p1_arena.peak_used,
   )
 
-  part2_start := time.now()
-  p2_result: int = part2_solution()
-  part2_end := time.now()
-  fmt.println(
+  // --- PART 2 ---
+  context.allocator = mem.arena_allocator(&p2_arena)
+
+  part2_start : = time.now()
+  p2_result   : = part2_solution(file_lines)
+  part2_end   : = time.now()
+  println(
     "PART 2:",
     p2_result,
     " -- Time:",
     time.diff(part2_start, part2_end),
     " -- Memory Used:",
-    solution_arena.peak_used,
+    p2_arena.peak_used,
   )
-  fmt.println(
+  println(
     "---------------------------------------------------------------------\n",
   )
 }
 
-parse_letter_num :: proc(s: string) -> (letter: u8, number: int, ok: bool) {
+parse_letter_num :: proc(s: string) -> (letter: u8, number: int) 
+{
   letter = s[0]
 
   value := 0
-  for ch in s[1:] {
+  for ch in s[1:] 
+  {
     /*
             `value = value * 10 + int(ch - '0')` is “append digit `ch` to the end of the current decimal number”.
             Break it down:
@@ -103,28 +125,24 @@ parse_letter_num :: proc(s: string) -> (letter: u8, number: int, ok: bool) {
     value = value * 10 + int(ch - '0')
   }
 
-  return letter, value, true
+  return letter, value
 }
 
-part1_solution :: proc() -> int {
+part1_solution :: proc(file_lines: []string) -> int 
+{
   using fmt
-
-  file_lines := strings.split_lines(FILE)
-  defer delete(file_lines)
 
   dial := 50
   times_at_zero := 0
 
-  for line in file_lines {
-    if line == "" {
+  for line in file_lines 
+  {
+    if line == "" 
+    {
       continue
     }
 
-    letter, number, ok := parse_letter_num(line)
-    if !ok {
-      continue
-    }
-
+    letter, number := parse_letter_num(line)
     steps := number % 100
 
     switch letter {
@@ -144,11 +162,9 @@ part1_solution :: proc() -> int {
 }
 
 
-part2_solution :: proc() -> int {
+part2_solution :: proc(file_lines: []string) -> int 
+{
   using fmt
-
-  file_lines := strings.split_lines(FILE)
-  defer delete(file_lines)
 
   dial := 50
   times_at_zero := 0
@@ -156,14 +172,12 @@ part2_solution :: proc() -> int {
   printf("The dial starts by pointing at %d.\n", dial)
 
   for line in file_lines {
-    if line == "" {
+    if line == "" 
+    {
       continue
     }
 
-    letter, number, ok := parse_letter_num(line)
-    if !ok {
-      continue
-    }
+    letter, number := parse_letter_num(line)
 
     dir: int
     switch letter {
