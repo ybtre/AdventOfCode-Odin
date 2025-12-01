@@ -145,16 +145,10 @@ part1_solution :: proc(file_lines: []string) -> int
     letter, number := parse_letter_num(line)
     steps := number % 100
 
-    switch letter {
-    case 'L':
-      dial = (dial + 100 - steps) % 100
-    case 'R':
-      dial = (dial + steps) % 100
-    }
+    dir := 1 - 2 * int(letter == 'L')
+    dial = (dial + dir * steps + 100) % 100
 
-    if dial == 0 {
-      times_at_zero += 1
-    }
+    times_at_zero += int(dial == 0)
   }
 
   printf("Total times at zero: %d\n", times_at_zero)
@@ -179,19 +173,12 @@ part2_solution :: proc(file_lines: []string) -> int
 
     letter, number := parse_letter_num(line)
 
-    dir: int
-    switch letter {
-    case 'L':
-      dir = -1
-    case 'R':
-      dir = +1
-    }
+    dir := 1 - 2 * int(letter == 'L')
 
-    for i := 0; i < number; i += 1 {
+    for i := 0; i < number; i += 1 
+    {
       dial = (dial + dir + 100) % 100
-      if dial == 0 {
-        times_at_zero += 1
-      }
+      times_at_zero += int(dial == 0)
     }
   }
 
