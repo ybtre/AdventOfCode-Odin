@@ -1,7 +1,11 @@
 {
+  "brace_style": "Allman",
+  "indent_cases": true,
+  "sort_imports": false,
+  "space_single_line_blocks": true,
   "character_width": 80,
   "spaces": 2,
   "tabs": false,
-  "tabs_width": 1
+  "tabs_width": 1,
+  "newline_style": "LF"
 }
-

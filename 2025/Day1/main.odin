@@ -17,10 +17,10 @@ FILENAME :: `input.txt`
 FILE :: string(#load(FILENAME))
 
 arena_input_backing: [16 * mem.Megabyte]u8
-arena_p1_backing:    [4 * mem.Megabyte]u8
-arena_p2_backing:    [4 * mem.Megabyte]u8
+arena_p1_backing: [4 * mem.Megabyte]u8
+arena_p2_backing: [4 * mem.Megabyte]u8
 
-main :: proc() 
+main :: proc()
 {
   using fmt
 
@@ -31,7 +31,7 @@ main :: proc()
   mem.arena_init(&p1_arena, arena_p1_backing[:])
 
   p2_arena: mem.Arena
-  mem.arena_init(&p2_arena, arena_p2_backing[:])  
+  mem.arena_init(&p2_arena, arena_p2_backing[:])
 
   println(
     "---------------------------------------------------------------------",
@@ -44,9 +44,9 @@ main :: proc()
   // --- PART 1 ---
   context.allocator = mem.arena_allocator(&p1_arena)
 
-  part1_start : = time.now()
-  p1_result   : = part1_solution(file_lines)
-  part1_end   : = time.now()
+  part1_start := time.now()
+  p1_result := part1_solution(file_lines)
+  part1_end := time.now()
   println(
     "PART 1:",
     p1_result,
@@ -59,9 +59,9 @@ main :: proc()
   // --- PART 2 ---
   context.allocator = mem.arena_allocator(&p2_arena)
 
-  part2_start : = time.now()
-  p2_result   : = part2_solution(file_lines)
-  part2_end   : = time.now()
+  part2_start := time.now()
+  p2_result := part2_solution(file_lines)
+  part2_end := time.now()
   println(
     "PART 2:",
     p2_result,
@@ -75,12 +75,12 @@ main :: proc()
   )
 }
 
-parse_letter_num :: proc(s: string) -> (letter: u8, number: int) 
+parse_letter_num :: proc(s: string) -> (letter: u8, number: int)
 {
   letter = s[0]
 
   value := 0
-  for ch in s[1:] 
+  for ch in s[1:]
   {
     /*
             `value = value * 10 + int(ch - '0')` is “append digit `ch` to the end of the current decimal number”.
@@ -128,16 +128,16 @@ parse_letter_num :: proc(s: string) -> (letter: u8, number: int)
   return letter, value
 }
 
-part1_solution :: proc(file_lines: []string) -> int 
+part1_solution :: proc(file_lines: []string) -> int
 {
   using fmt
 
   dial := 50
   times_at_zero := 0
 
-  for line in file_lines 
+  for line in file_lines
   {
-    if line == "" 
+    if line == ""
     {
       continue
     }
@@ -156,7 +156,7 @@ part1_solution :: proc(file_lines: []string) -> int
 }
 
 
-part2_solution :: proc(file_lines: []string) -> int 
+part2_solution :: proc(file_lines: []string) -> int
 {
   using fmt
 
@@ -165,8 +165,9 @@ part2_solution :: proc(file_lines: []string) -> int
 
   printf("The dial starts by pointing at %d.\n", dial)
 
-  for line in file_lines {
-    if line == "" 
+  for line in file_lines
+  {
+    if line == ""
     {
       continue
     }
@@ -175,7 +176,7 @@ part2_solution :: proc(file_lines: []string) -> int
 
     dir := 1 - 2 * int(letter == 'L')
 
-    for i := 0; i < number; i += 1 
+    for i := 0; i < number; i += 1
     {
       dial = (dial + dir + 100) % 100
       times_at_zero += int(dial == 0)
